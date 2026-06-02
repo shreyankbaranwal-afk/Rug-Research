@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rug Research — Ramesh Carpet Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F7F4EF;--surface:#FFFFFF;--surface2:#F0EBE3;--border:#E2D9CE;--border2:#C9BDB0;--text:#1C1612;--text2:#6B5E52;--text3:#A8998C;--accent:#8B5E3C;--accent2:#C4884F;--accent-light:#F3E9DE;--green:#3A7D4E;--green-light:#E6F4EC;--red:#B5372A;--red-light:#FAEAE8;--amber:#A06B00;--amber-light:#FFF4DE;--blue:#2B5EA7;--blue-light:#E8EFF9;--tag-c-bg:#FDF5EC;--tag-c-tx:#7A4A1C;--tag-t-bg:#EDF7F2;--tag-t-tx:#1A5C38;--tag-d-bg:#F0EEFA;--tag-d-tx:#3D2D8A;--sh:0 1px 4px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);--sh2:0 4px 12px rgba(0,0,0,.10),0 8px 32px rgba(0,0,0,.06);--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh}
+
+/* HEADER */
+.hdr{background:var(--text);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:54px;position:sticky;top:0;z-index:100}
+.logo{font-family:'Playfair Display',serif;font-size:17px;color:#F7F4EF}.logo span{color:var(--accent2)}
+.hdr-meta{font-size:11px;color:#8B7E74;font-family:'DM Mono',monospace;border-left:1px solid #3A3330;padding-left:14px;margin-left:14px;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdr-stats{display:flex;gap:8px}
+.stat-pill{background:#2A2320;border:1px solid #3A3330;border-radius:20px;padding:3px 10px;font-size:11px;color:#A8998C;font-family:'DM Mono',monospace}
+.stat-pill strong{color:var(--accent2)}
+
+/* TOOLBAR */
+.tbr{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;gap:0;overflow-x:auto}
+.tab{padding:13px 18px;font-size:13px;font-weight:500;color:var(--text2);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tab:hover{color:var(--text)}.tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tbr-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:12px;flex-shrink:0}
+.btn{padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn:hover{background:var(--surface2)}.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.pri:hover{background:#7A5235}
+.btn.sm{padding:4px 10px;font-size:11px}
+
+/* FILTER BAR */
+.fbar{background:var(--surface);border-bottom:1px solid var(--border);padding:9px 24px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.flbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-right:2px}
+select{padding:5px 26px 5px 9px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:var(--surface);color:var(--text);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23A8998C'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;cursor:pointer;font-family:'DM Sans',sans-serif}
+select:focus{outline:none;border-color:var(--accent)}
+.fcount{margin-left:auto;font-size:12px;color:var(--text3);font-family:'DM Mono',monospace}
+
+/* MAIN */
+.main{padding:22px 24px}
+.pane{display:none}.pane.on{display:block}
+
+/* UPLOAD ZONE */
+.upzone{border:2px dashed var(--border2);border-radius:var(--r);padding:44px 32px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface);margin-bottom:22px}
+.upzone:hover,.upzone.drag{border-color:var(--accent);background:var(--accent-light)}
+.upzone h3{font-family:'Playfair Display',serif;font-size:20px;margin-bottom:8px}
+.upzone p{font-size:13px;color:var(--text2)}.upzone .hint{font-size:11px;color:var(--text3);margin-top:8px;font-family:'DM Mono',monospace}
+.upzone-icon{font-size:32px;margin-bottom:10px}
+
+/* GALLERY */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:15px}
+.rug-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:box-shadow .2s,transform .2s}
+.rug-card:hover{box-shadow:var(--sh2);transform:translateY(-2px)}
+.img-wrap{position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:var(--surface2)}
+.img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.img-wrap a{cursor:pointer}
+.rug-card:hover .img-wrap img{transform:scale(1.04)}
+.badge-row{position:absolute;top:7px;left:7px;display:flex;gap:3px;flex-wrap:wrap}
+.sbadge{padding:2px 6px;border-radius:9px;font-size:10px;font-weight:600;letter-spacing:.04em;font-family:'DM Mono',monospace}
+.b-new{background:var(--green);color:#fff}.b-drop{background:var(--red);color:#fff}.b-unt{background:rgba(0,0,0,.45);color:rgba(255,255,255,.85)}
+.rug-info{padding:11px}
+.rug-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.rug-brand{font-size:11px;color:var(--text3);margin-bottom:9px;font-family:'DM Mono',monospace}
+.tag-row{display:flex;flex-direction:column;gap:5px}
+.tag-field{display:flex;align-items:center;gap:6px}
+.tlbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);width:50px;flex-shrink:0}
+.tsel{flex:1;padding:3px 20px 3px 7px;border-radius:5px;font-size:11px;border:1px solid var(--border);cursor:pointer;background-size:8px;background-position:right 4px center;background-repeat:no-repeat;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%23A8998C'/%3E%3C/svg%3E");font-family:'DM Sans',sans-serif}
+.tsel:focus{outline:none}
+.tsel.cs{background-color:var(--tag-c-bg);color:var(--tag-c-tx);border-color:#E8D4B8}
+.tsel.ts{background-color:var(--tag-t-bg);color:var(--tag-t-tx);border-color:#B8DECA}
+.tsel.ds{background-color:var(--tag-d-bg);color:var(--tag-d-tx);border-color:#C8BCEE}
+.nf{width:100%;padding:4px 7px;border:1px solid var(--border);border-radius:5px;font-size:11px;font-family:'DM Sans',sans-serif;resize:none;color:var(--text2);background:var(--surface2);margin-top:6px;height:38px}
+.nf:focus{outline:none;border-color:var(--accent)}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1000;display:none;align-items:center;justify-content:center}
+.modal-ov.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r);padding:26px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:5px}
+.modal p{font-size:12px;color:var(--text2);margin-bottom:14px}
+.modal input{width:100%;padding:8px 11px;border:1px solid var(--border2);border-radius:6px;font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:13px}
+.modal input:focus{outline:none;border-color:var(--accent)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end}
+
+/* ANALYSIS */
+.an-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:22px}
+@media(max-width:860px){.an-grid{grid-template-columns:1fr}}
+.an-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.an-card h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:14px;font-weight:600}
+.bar-row{display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.bar-lbl{font-size:11px;color:var(--text2);width:105px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-trk{flex:1;height:7px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.bc{background:var(--accent2)}.bt{background:var(--green)}.bd{background:var(--blue)}
+.bar-n{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;width:26px;text-align:right}
+.combo-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh);margin-bottom:18px}
+.combo-card h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:14px;font-weight:600}
+.combo-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+.combo-row:last-child{border-bottom:none}
+.combo-num{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);width:18px}
+.combo-tags{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+.ctag{padding:2px 7px;border-radius:9px;font-size:11px;font-weight:500}
+.ctag-c{background:var(--tag-c-bg);color:var(--tag-c-tx)}
+.ctag-t{background:var(--tag-t-bg);color:var(--tag-t-tx)}
+.ctag-d{background:var(--tag-d-bg);color:var(--tag-d-tx)}
+.combo-cnt{font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--text)}
+
+/* TREND */
+.trend-empty,.bs-empty{text-align:center;padding:70px 30px;color:var(--text3)}
+.trend-empty h3,.bs-empty h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--text2);margin-bottom:8px}
+.chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:18px;box-shadow:var(--sh)}
+.chart-wrap h3{font-size:13px;font-weight:600;margin-bottom:14px;text-transform:capitalize}
+
+/* A&E */
+.ae-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+@media(max-width:660px){.ae-grid{grid-template-columns:1fr}}
+.ae-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.ae-card.add{border-top:3px solid var(--green)}.ae-card.drp{border-top:3px solid var(--red)}
+.ae-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.ae-title.a{color:var(--green)}.ae-title.d{color:var(--red)}
+.ae-big{font-family:'DM Mono',monospace;font-size:28px;font-weight:600;margin-bottom:11px}
+.ae-item{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.ae-item:last-child{border-bottom:none}
+.ae-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.da{background:var(--green)}.dd{background:var(--red)}
+.ae-sku{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text2)}
+.ae-br{font-size:10px;color:var(--text3);font-family:'DM Mono',monospace}
+.ae-none{color:var(--text3);font-size:12px;padding:14px 0;text-align:center}
+.signal{padding:9px 11px;border-radius:6px;font-size:12px;margin-bottom:7px}
+
+/* BEST SELLERS */
+.bs-hdr{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.bs-hdr h3{font-family:'Playfair Display',serif;font-size:20px}
+.brand-sec{margin-bottom:28px}
+.brand-sec h4{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);font-weight:600;margin-bottom:11px;padding-bottom:7px;border-bottom:1px solid var(--border)}
+.brand-gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:11px}
+.bs-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:var(--sh)}
+.bs-img{position:relative;padding-bottom:100%;background:var(--surface2)}
+.bs-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bs-info{padding:7px}
+.bs-name{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bs-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.bs-tag{padding:1px 5px;border-radius:5px;font-size:10px}
+
+/* LOG */
+.log-wrap{overflow-x:auto}
+.log-tbl{width:100%;border-collapse:collapse;min-width:600px}
+.log-tbl th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);font-weight:600;padding:8px 11px;border-bottom:2px solid var(--border);background:var(--surface2)}
+.log-tbl td{padding:9px 11px;font-size:12px;border-bottom:1px solid var(--border);color:var(--text2)}
+.log-tbl tr:hover td{background:var(--surface2)}
+.log-old{text-decoration:line-through;color:var(--text3)}
+.log-new{color:var(--accent);font-weight:500}
+.log-empty{text-align:center;padding:55px;color:var(--text3);font-size:13px}
+
+/* SECTION HEAD */
+.sec-hd{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.sec-hd h2{font-family:'Playfair Display',serif;font-size:21px}
+.sec-hd p{font-size:13px;color:var(--text2)}
+
+/* EMPTY GALLERY */
+.gal-empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--text3)}
+.gal-empty h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--text2);margin-bottom:7px}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;padding:9px 15px;border-radius:8px;font-size:13px;z-index:2000;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* PROGRESS */
+.prog-bar{height:3px;background:var(--border);display:none}
+.prog-fill{height:100%;background:var(--accent);width:0;transition:width .3s}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div style="display:flex;align-items:center">
+    <div class="logo">Ramesh <span>Research</span></div>
+    <div class="hdr-meta" id="hdr-meta">No data loaded — import a CSV to begin</div>
+  </div>
+  <span id="sync-indicator" style="font-size:11px;color:var(--accent2);margin-right:8px;font-family:'DM Mono',monospace"></span>
+  <div class="hdr-stats">
+    <div class="stat-pill"><strong id="st-total">0</strong> rugs</div>
+    <div class="stat-pill"><strong id="st-tagged">0</strong> tagged</div>
+    <div class="stat-pill"><strong id="st-brands">0</strong> brands</div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="tbr">
+  <button class="tab on" data-tab="gallery">Gallery</button>
+  <button class="tab" data-tab="analysis">Analysis</button>
+  <button class="tab" data-tab="trend">Trend</button>
+  <button class="tab" data-tab="ae">Additions &amp; Eliminations</button>
+  <button class="tab" data-tab="bs">Best Sellers</button>
+  <button class="tab" data-tab="log">Log <span id="log-cnt">(0)</span></button>
+  <div class="tbr-right">
+    <button class="btn sm" onclick="initSheets()">Init Sheets</button>
+    <button class="btn sm" onclick="loadFromSheets()">↓ Load from Sheets</button>
+    <button class="btn sm" onclick="syncToSheets()">↑ Sync to Sheets</button>
+    <button class="btn sm" onclick="exportData()">Export JSON</button>
+    <button class="btn sm pri" onclick="triggerCSV()">+ Import CSV</button>
+    <input type="file" id="csv-file" accept=".csv" style="display:none">
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-bar" id="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+
+<!-- FILTER BAR -->
+<div class="fbar" id="fbar">
+  <span class="flbl">Filter</span>
+  <select id="f-brand"><option value="">All Brands</option></select>
+  <select id="f-color"><option value="">All Colors</option></select>
+  <select id="f-texture"><option value="">All Textures</option></select>
+  <select id="f-design"><option value="">All Designs</option></select>
+  <select id="f-status">
+    <option value="">All Status</option>
+    <option value="new">New This Month</option>
+    <option value="dropped">Dropped</option>
+    <option value="tagged">Tagged</option>
+    <option value="untagged">Untagged</option>
+  </select>
+  <button class="btn sm" id="clear-filters">Clear</button>
+  <span class="fcount" id="fcount">0 rugs</span>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- GALLERY -->
+  <div class="pane on" id="pane-gallery">
+    <div class="upzone" id="upzone">
+      <div class="upzone-icon">⬇</div>
+      <h3>Drop a CSV file here</h3>
+      <p>Drag & drop or click to import a brand CSV from Apify</p>
+      <div class="hint">Surya · Loloi · Jaipur Living · Feizy · Kalaty · any brand</div>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="pane" id="pane-analysis">
+    <div class="sec-hd"><div><h2>Market Analysis</h2><p>Frequency distribution across all tagged rugs</p></div></div>
+    <div class="an-grid">
+      <div class="an-card"><h3>Color</h3><div id="bars-color"></div></div>
+      <div class="an-card"><h3>Texture</h3><div id="bars-texture"></div></div>
+      <div class="an-card"><h3>Design</h3><div id="bars-design"></div></div>
+    </div>
+    <div class="combo-card"><h3>Top Combinations</h3><div id="combos"></div></div>
+    <div class="combo-card"><h3>By Brand</h3><div id="by-brand"></div></div>
+  </div>
+
+  <!-- TREND -->
+  <div class="pane" id="pane-trend">
+    <div class="sec-hd"><div><h2>Trend Over Time</h2><p>Requires 2+ monthly imports</p></div></div>
+    <div id="trend-body"></div>
+  </div>
+
+  <!-- A&E -->
+  <div class="pane" id="pane-ae">
+    <div class="sec-hd">
+      <div><h2>Additions &amp; Eliminations</h2><p>What changed since last import</p></div>
+    </div>
+    <div class="ae-grid">
+      <div class="ae-card add">
+        <div class="ae-title a">▲ New Additions</div>
+        <div class="ae-big" id="ae-add-n">0</div>
+        <div id="ae-add-list"><div class="ae-none">No additions yet</div></div>
+      </div>
+      <div class="ae-card drp">
+        <div class="ae-title d">▼ Eliminations</div>
+        <div class="ae-big" id="ae-drp-n">0</div>
+        <div id="ae-drp-list"><div class="ae-none">No eliminations yet</div></div>
+      </div>
+    </div>
+    <div class="combo-card"><h3>Signals</h3><div id="ae-signals"></div></div>
+  </div>
+
+  <!-- BEST SELLERS -->
+  <div class="pane" id="pane-bs">
+    <div class="bs-hdr"><h3>Market Consensus Gallery</h3></div>
+    <div id="bs-body"></div>
+  </div>
+
+  <!-- LOG -->
+  <div class="pane" id="pane-log">
+    <div class="sec-hd">
+      <div><h2>Correction Log</h2><p>Every tag change recorded automatically</p></div>
+      <button class="btn sm" id="clear-log" style="margin-left:auto">Clear Log</button>
+    </div>
+    <div id="log-body"></div>
+  </div>
+
+</div>
+
+<!-- CUSTOM TAG MODAL -->
+<div class="modal-ov" id="modal">
+  <div class="modal">
+    <h3>Add Custom Tag</h3>
+    <p>Permanently added to <strong id="modal-cat-name"></strong> vocabulary for all rugs.</p>
+    <input type="text" id="modal-input" placeholder="Type new tag name…">
+    <div class="modal-btns">
+      <button class="btn" id="modal-cancel">Cancel</button>
+      <button class="btn pri" id="modal-confirm">Add Tag</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const V = {
+  color:   ['Neutrals','Pastels','Washed','Muted','Earthy','Shade Shifting','Bold','Jewel','Colorful'],
+  texture: ['Distressed','Vintage','Heavy Washed','Abrash','Flat','Plush','Natural Yarn','High-Low','Sculpted','Shaggy','Striped','Ribbed','Dana'],
+  design:  ['Oushak','Anatolian Oushak','Serapi','Kars','Khotan','Polychrome','Geometric Medallion','Botanical','All-Over','Tree of Life','Tribal','Moroccan','Donegal','Plaid','Mid Century','Abstract','Transitional']
+};
+
+let S = {
+  rugs: [],        // {idx, id, brand, name, sku, img, page, month, status}
+  tags: {},        // idx -> {color, texture, design, notes}
+  log: [],
+  snaps: [],       // [{month, freq:{color:{},texture:{},design:{}}}]
+  vocab: JSON.parse(JSON.stringify(V)),
+  prevSkus: {}     // brand -> [sku,...]
+};
+
+// ═══════════════════════════════════════
+// PERSISTENCE
+// ═══════════════════════════════════════
+function save() {
+  try { localStorage.setItem('rrs2', JSON.stringify(S)); } catch(e) {}
+}
+function loadSaved() {
+  try {
+    const raw = localStorage.getItem('rrs2');
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    // merge carefully
+    S.rugs = saved.rugs || [];
+    S.tags = saved.tags || {};
+    S.log = saved.log || [];
+    S.snaps = saved.snaps || [];
+    S.prevSkus = saved.prevSkus || {};
+    // merge vocab - keep defaults + any custom
+    if (saved.vocab) {
+      ['color','texture','design'].forEach(cat => {
+        saved.vocab[cat].forEach(t => { if (!S.vocab[cat].includes(t)) S.vocab[cat].push(t); });
+      });
+    }
+  } catch(e) {}
+}
+
+// ═══════════════════════════════════════
+// CSV IMPORT — FIXED
+// ═══════════════════════════════════════
+function triggerCSV() { document.getElementById('csv-file').click(); }
+
+document.getElementById('csv-file').addEventListener('change', function() {
+  if (this.files[0]) { processFile(this.files[0]); this.value = ''; }
+});
+
+const upzone = document.getElementById('upzone');
+upzone.addEventListener('click', triggerCSV);
+upzone.addEventListener('dragover', e => { e.preventDefault(); upzone.classList.add('drag'); });
+upzone.addEventListener('dragleave', () => upzone.classList.remove('drag'));
+upzone.addEventListener('drop', e => {
+  e.preventDefault(); upzone.classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f && f.name.toLowerCase().endsWith('.csv')) processFile(f);
+  else toast('Please drop a .csv file');
+});
+
+function processFile(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      importCSV(e.target.result, file.name);
+    } catch(err) {
+      toast('Error reading CSV: ' + err.message);
+      console.error(err);
+    }
+  };
+  reader.onerror = () => toast('Could not read file');
+  reader.readAsText(file);
+}
+
+// FIX BUG 2: robust CSV parser handling \r\n, quoted fields, escaped quotes
+function parseCSV(text) {
+  // normalise line endings
+  text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const rows = [];
+  let i = 0;
+  while (i < text.length) {
+    const row = [];
+    while (i < text.length && text[i] !== '\n') {
+      let field = '';
+      if (text[i] === '"') {
+        i++; // skip opening quote
+        while (i < text.length) {
+          if (text[i] === '"' && text[i+1] === '"') { field += '"'; i += 2; } // FIX BUG 3: escaped quote
+          else if (text[i] === '"') { i++; break; } // closing quote
+          else { field += text[i++]; }
+        }
+      } else {
+        while (i < text.length && text[i] !== ',' && text[i] !== '\n') { field += text[i++]; }
+      }
+      row.push(field.trim());
+      if (i < text.length && text[i] === ',') i++; // skip comma
+    }
+    if (i < text.length) i++; // skip \n
+    if (row.length > 1 || (row.length === 1 && row[0])) rows.push(row);
+  }
+  return rows;
+}
+
+// FIX BUG 4: clean column detection with priority ordering
+function detectColumns(headers) {
+  const h = headers.map(x => x.toLowerCase().trim());
+
+  // FIX BUG 1: return null (not -1 which is falsy... well -1 is truthy but 0 is falsy)
+  // Use null as sentinel, check with !== null
+  function findCol(priority, fallback) {
+    for (const p of priority) {
+      const idx = h.indexOf(p);
+      if (idx !== -1) return idx;
+    }
+    for (const f of fallback) {
+      const idx = h.findIndex(col => col.includes(f));
+      if (idx !== -1) return idx;
+    }
+    return null;
+  }
+
+  const imgIdx = findCol(
+    ['imageurl','image_url','img_url','thumbnail_url','photo_url','src'],
+    ['image','img','photo','thumb','src']
+  );
+  const nameIdx = findCol(
+    ['productname','product_name','name','title','sku','itemname','item_name'],
+    ['name','title','sku','product','item']
+  );
+  const pageIdx = findCol(
+    ['pageurl','page_url','producturl','product_url','url','link'],
+    ['url','link','page','href']
+  );
+
+  return { img: imgIdx, name: nameIdx, page: pageIdx };
+}
+
+function detectBrand(filename) {
+  const f = filename.toLowerCase();
+  if (f.includes('surya')) return 'Surya';
+  if (f.includes('loloi')) return 'Loloi';
+  if (f.includes('jaipur') || f.includes('jli')) return 'Jaipur Living';
+  if (f.includes('feizy')) return 'Feizy';
+  if (f.includes('kalaty')) return 'Kalaty';
+  if (f.includes('nourison')) return 'Nourison';
+  if (f.includes('safavieh')) return 'Safavieh';
+  if (f.includes('karastan')) return 'Karastan';
+  if (f.includes('momeni')) return 'Momeni';
+  return 'Brand ' + filename.replace(/\.csv$/i,'').replace(/[^a-zA-Z0-9]/g,'').slice(0,12);
+}
+
+function importCSV(text, filename) {
+  const rows = parseCSV(text);
+  if (rows.length < 2) { toast('CSV appears empty'); return; }
+
+  const headers = rows[0];
+  const cols = detectColumns(headers);
+
+  // FIX BUG 1: check null explicitly, not falsy
+  if (cols.img === null) {
+    toast('Cannot detect image URL column. Share this CSV with Claude to add mapping.');
+    console.log('Headers found:', headers);
+    return;
+  }
+
+  const brand = detectBrand(filename);
+  const month = new Date().toISOString().slice(0, 7);
+  const prevSet = new Set(S.prevSkus[brand] || []);
+  const newSet = new Set();
+  let added = 0, skipped = 0;
+
+  for (let r = 1; r < rows.length; r++) {
+    const row = rows[r];
+    if (!row || row.length < 2) continue;
+
+    const img  = cols.img !== null && row[cols.img]  ? row[cols.img].trim()  : '';
+    const name = cols.name !== null && row[cols.name] ? row[cols.name].trim() : ('Row ' + r);
+    const page = cols.page !== null && row[cols.page] ? row[cols.page].trim() : '';
+
+    if (!img) continue;
+
+    // deduplicate by brand+sku
+    const sku = name;
+    newSet.add(sku);
+
+    const existing = S.rugs.find(x => x.brand === brand && x.sku === sku);
+    if (existing) { skipped++; continue; }
+
+    const idx = S.rugs.length;
+    S.rugs.push({
+      idx,
+      brand,
+      name,
+      sku,
+      img,
+      page,
+      month,
+      status: prevSet.has(sku) ? 'cont' : 'new'
+    });
+    added++;
+  }
+
+  // mark eliminations
+  prevSet.forEach(sku => {
+    if (!newSet.has(sku)) {
+      const r = S.rugs.find(x => x.brand === brand && x.sku === sku);
+      if (r) r.status = 'dropped';
+    }
+  });
+
+  S.prevSkus[brand] = [...newSet];
+  saveSnap(month);
+  saveAndSync();
+  refreshAll();
+  if (S.rugs.length) upzone.style.display = 'none';
+  toast(`${brand}: ${added} new rugs imported${skipped ? `, ${skipped} already exist` : ''}`);
+}
+
+// ═══════════════════════════════════════
+// GALLERY — FIX BUGS 6 & 7: event delegation, no inline handlers with special chars
+// ═══════════════════════════════════════
+function renderGallery() {
+  const fBrand   = document.getElementById('f-brand').value;
+  const fColor   = document.getElementById('f-color').value;
+  const fTexture = document.getElementById('f-texture').value;
+  const fDesign  = document.getElementById('f-design').value;
+  const fStatus  = document.getElementById('f-status').value;
+
+  const rugs = S.rugs.filter(r => {
+    const t = S.tags[r.idx] || {};
+    if (fBrand   && r.brand !== fBrand) return false;
+    if (fColor   && t.color !== fColor) return false;
+    if (fTexture && t.texture !== fTexture) return false;
+    if (fDesign  && t.design !== fDesign) return false;
+    if (fStatus === 'new'     && r.status !== 'new') return false;
+    if (fStatus === 'dropped' && r.status !== 'dropped') return false;
+    if (fStatus === 'tagged'  && !isTagged(r.idx)) return false;
+    if (fStatus === 'untagged' && isTagged(r.idx)) return false;
+    return true;
+  });
+
+  document.getElementById('fcount').textContent = rugs.length + ' rugs';
+  const grid = document.getElementById('gallery');
+
+  if (!rugs.length) {
+    grid.innerHTML = S.rugs.length
+      ? '<div class="gal-empty"><h3>No rugs match filters</h3><p>Clear filters to see all rugs</p></div>'
+      : '';
+    return;
+  }
+
+  grid.innerHTML = rugs.map(r => {
+    const t = S.tags[r.idx] || {};
+    const badge = r.status === 'new'     ? '<span class="sbadge b-new">NEW</span>'
+                : r.status === 'dropped' ? '<span class="sbadge b-drop">DROPPED</span>'
+                : !isTagged(r.idx)       ? '<span class="sbadge b-unt">UNTAGGED</span>'
+                : '';
+
+    // FIX BUG 7: use numeric idx as data attribute, no special chars in handlers
+    return `<div class="rug-card" data-idx="${r.idx}">
+      <div class="img-wrap">
+        ${r.page ? `<a href="${escAttr(r.page)}" target="_blank" rel="noopener" style="display:block;position:absolute;inset:0;z-index:2"></a>` : ''}
+        <img src="${escAttr(r.img)}" alt="${escAttr(r.name)}" loading="lazy" onerror="this.style.opacity='.25'">
+        <div class="badge-row">${badge}</div>
+      </div>
+      <div class="rug-info">
+        <div class="rug-name" title="${escAttr(r.name)}">${escHtml(r.name)}</div>
+        <div class="rug-brand">${escHtml(r.brand)} · ${r.month || ''}</div>
+        <div class="tag-row">
+          <div class="tag-field">
+            <span class="tlbl">Color</span>
+            ${mkSel(r.idx, 'color', t.color)}
+          </div>
+          <div class="tag-field">
+            <span class="tlbl">Texture</span>
+            ${mkSel(r.idx, 'texture', t.texture)}
+          </div>
+          <div class="tag-field">
+            <span class="tlbl">Design</span>
+            ${mkSel(r.idx, 'design', t.design)}
+          </div>
+        </div>
+        <textarea class="nf" data-idx="${r.idx}" placeholder="Notes…">${escHtml(t.notes||'')}</textarea>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function mkSel(idx, cat, val) {
+  const cls = cat === 'color' ? 'cs' : cat === 'texture' ? 'ts' : 'ds';
+  const opts = S.vocab[cat].map(v =>
+    `<option value="${escAttr(v)}"${v === val ? ' selected' : ''}>${escHtml(v)}</option>`
+  ).join('');
+  return `<select class="tsel ${cls}" data-idx="${idx}" data-cat="${cat}">
+    <option value="">— unset —</option>
+    ${opts}
+    <option value="__custom__">+ Add custom…</option>
+  </select>`;
+}
+
+// FIX BUG 6: single event delegation on gallery
+document.getElementById('gallery').addEventListener('change', e => {
+  const el = e.target;
+  if (el.matches('select.tsel')) {
+    const idx = parseInt(el.dataset.idx);
+    const cat = el.dataset.cat;
+    const val = el.value;
+    if (val === '__custom__') {
+      el.value = (S.tags[idx] || {})[cat] || '';
+      openModal(cat, idx, el);
+    } else {
+      applyTag(idx, cat, val);
+    }
+  }
+  if (el.matches('textarea.nf')) {
+    const idx = parseInt(el.dataset.idx);
+    if (!S.tags[idx]) S.tags[idx] = {};
+    S.tags[idx].notes = el.value;
+    save();
+  }
+});
+
+// note: textarea 'change' fires on blur - also wire input for live save
+document.getElementById('gallery').addEventListener('input', e => {
+  if (e.target.matches('textarea.nf')) {
+    const idx = parseInt(e.target.dataset.idx);
+    if (!S.tags[idx]) S.tags[idx] = {};
+    S.tags[idx].notes = e.target.value;
+    save();
+  }
+});
+
+function applyTag(idx, cat, val) {
+  const old = (S.tags[idx] || {})[cat] || '';
+  if (!S.tags[idx]) S.tags[idx] = {};
+  S.tags[idx][cat] = val;
+  if (old !== val) logEntry(idx, cat, old, val);
+  saveAndSync();
+  updateStats();
+  renderAnalysis();
+}
+
+function isTagged(idx) {
+  const t = S.tags[idx] || {};
+  return !!(t.color || t.texture || t.design);
+}
+
+// ═══════════════════════════════════════
+// CUSTOM TAG MODAL
+// ═══════════════════════════════════════
+let _mCat = null, _mIdx = null, _mEl = null;
+
+function openModal(cat, idx, el) {
+  _mCat = cat; _mIdx = idx; _mEl = el;
+  document.getElementById('modal-cat-name').textContent = cat;
+  document.getElementById('modal-input').value = '';
+  document.getElementById('modal').classList.add('open');
+  setTimeout(() => document.getElementById('modal-input').focus(), 80);
+}
+
+document.getElementById('modal-cancel').onclick = () => document.getElementById('modal').classList.remove('open');
+document.getElementById('modal-confirm').onclick = confirmCustom;
+document.getElementById('modal-input').addEventListener('keydown', e => { if (e.key === 'Enter') confirmCustom(); });
+
+function confirmCustom() {
+  const val = document.getElementById('modal-input').value.trim();
+  if (!val) return;
+  if (!S.vocab[_mCat].includes(val)) {
+    S.vocab[_mCat].push(val);
+    toast(`"${val}" added to ${_mCat} vocabulary`);
+  }
+  applyTag(_mIdx, _mCat, val);
+  document.getElementById('modal').classList.remove('open');
+  // rebuild just this card's selects
+  const card = document.querySelector(`.rug-card[data-idx="${_mIdx}"]`);
+  if (card) {
+    card.querySelectorAll('select.tsel').forEach(sel => {
+      const c = sel.dataset.cat;
+      const t = S.tags[_mIdx] || {};
+      sel.outerHTML = mkSel(_mIdx, c, t[c]);
+    });
+  }
+  save();
+}
+
+// ═══════════════════════════════════════
+// LOG
+// ═══════════════════════════════════════
+function logEntry(idx, cat, oldV, newV) {
+  const r = S.rugs[idx];
+  S.log.unshift({
+    time: new Date().toLocaleString(),
+    brand: r ? r.brand : '',
+    sku: r ? r.name : String(idx),
+    cat, old: oldV, new: newV
+  });
+  document.getElementById('log-cnt').textContent = `(${S.log.length})`;
+}
+
+function renderLog() {
+  const el = document.getElementById('log-body');
+  if (!S.log.length) {
+    el.innerHTML = '<div class="log-empty">No corrections yet. Change a tag and it will appear here.</div>';
+    return;
+  }
+  el.innerHTML = `<div class="log-wrap"><table class="log-tbl">
+    <thead><tr><th>Time</th><th>Brand</th><th>SKU</th><th>Category</th><th>Change</th></tr></thead>
+    <tbody>${S.log.map(e => `<tr>
+      <td style="white-space:nowrap;font-family:'DM Mono',monospace;font-size:11px">${escHtml(e.time)}</td>
+      <td>${escHtml(e.brand)}</td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(e.sku)}</td>
+      <td><span class="ctag ctag-${e.cat[0]}">${escHtml(e.cat)}</span></td>
+      <td><span class="log-old">${escHtml(e.old||'unset')}</span> → <span class="log-new">${escHtml(e.new)}</span></td>
+    </tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+document.getElementById('clear-log').onclick = () => {
+  if (!confirm('Clear all correction history?')) return;
+  S.log = [];
+  document.getElementById('log-cnt').textContent = '(0)';
+  renderLog(); save();
+};
+
+// ═══════════════════════════════════════
+// ANALYSIS
+// ═══════════════════════════════════════
+function renderAnalysis() {
+  const tagged = S.rugs.filter(r => isTagged(r.idx));
+  if (!tagged.length) {
+    ['color','texture','design'].forEach(cat =>
+      document.getElementById('bars-'+cat).innerHTML = '<p style="color:var(--text3);font-size:12px">Tag some rugs first</p>'
+    );
+    document.getElementById('combos').innerHTML = '<p style="color:var(--text3);font-size:12px">Tag Color + Texture + Design on rugs to see combinations</p>';
+    document.getElementById('by-brand').innerHTML = '';
+    return;
+  }
+
+  ['color','texture','design'].forEach(cat => {
+    const counts = {};
+    tagged.forEach(r => { const v=(S.tags[r.idx]||{})[cat]; if(v) counts[v]=(counts[v]||0)+1; });
+    const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+    const max = sorted[0] ? sorted[0][1] : 1;
+    const barCls = cat==='color'?'bc':cat==='texture'?'bt':'bd';
+    document.getElementById('bars-'+cat).innerHTML = sorted.map(([tag,n]) =>
+      `<div class="bar-row">
+        <div class="bar-lbl" title="${escHtml(tag)}">${escHtml(tag)}</div>
+        <div class="bar-trk"><div class="bar-fill ${barCls}" style="width:${Math.round(n/max*100)}%"></div></div>
+        <div class="bar-n">${n}</div>
+      </div>`
+    ).join('');
+  });
+
+  // combos
+  const combos = {};
+  tagged.forEach(r => {
+    const t = S.tags[r.idx]||{};
+    if (t.color && t.texture && t.design) {
+      const k = t.color+'|'+t.texture+'|'+t.design;
+      combos[k] = (combos[k]||0)+1;
+    }
+  });
+  const top = Object.entries(combos).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  document.getElementById('combos').innerHTML = top.length
+    ? top.map(([k,n],i) => {
+        const [c,t,d] = k.split('|');
+        return `<div class="combo-row">
+          <div class="combo-num">${i+1}</div>
+          <div class="combo-tags">
+            <span class="ctag ctag-c">${escHtml(c)}</span>
+            <span class="ctag ctag-t">${escHtml(t)}</span>
+            <span class="ctag ctag-d">${escHtml(d)}</span>
+          </div>
+          <div class="combo-cnt">${n}</div>
+        </div>`;
+      }).join('')
+    : '<p style="color:var(--text3);font-size:12px">Tag all 3 fields on at least one rug to see combinations</p>';
+
+  // by brand
+  const brands = [...new Set(S.rugs.map(r=>r.brand))];
+  document.getElementById('by-brand').innerHTML = brands.map(b => {
+    const total = S.rugs.filter(r=>r.brand===b).length;
+    const done  = S.rugs.filter(r=>r.brand===b && isTagged(r.idx)).length;
+    return `<div class="bar-row">
+      <div class="bar-lbl">${escHtml(b)}</div>
+      <div class="bar-trk"><div class="bar-fill bd" style="width:${total?Math.round(done/total*100):0}%"></div></div>
+      <div class="bar-n">${done}/${total}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// TREND — FIX BUG 8
+// ═══════════════════════════════════════
+function saveSnap(month) {
+  if (!S.rugs.length) return; // FIX BUG 8: don't save empty snapshot
+  const snap = { month, freq: {color:{}, texture:{}, design:{}} };
+  S.rugs.forEach(r => {
+    const t = S.tags[r.idx]||{};
+    ['color','texture','design'].forEach(cat => {
+      const v=t[cat]; if(v) snap.freq[cat][v]=(snap.freq[cat][v]||0)+1;
+    });
+  });
+  const ex = S.snaps.findIndex(s=>s.month===month);
+  if (ex>=0) S.snaps[ex]=snap; else S.snaps.push(snap);
+  S.snaps.sort((a,b)=>a.month.localeCompare(b.month));
+}
+
+function renderTrend() {
+  const el = document.getElementById('trend-body');
+  if (S.snaps.length < 2) {
+    el.innerHTML = '<div class="trend-empty"><h3>Not enough data yet</h3><p>Import at least 2 monthly CSVs to see trend lines. Each import is saved as a dated snapshot.</p></div>';
+    return;
+  }
+  const months = S.snaps.map(s=>s.month);
+  const palette = ['#8B5E3C','#3A7D4E','#2B5EA7','#C4884F','#B5372A','#A06B00','#6B3FA0','#1A7A7A','#B04070'];
+  el.innerHTML = ['color','texture','design'].map(cat => {
+    const tags = [...new Set(S.snaps.flatMap(s=>Object.keys(s.freq[cat])))].slice(0,9);
+    const W=700,H=200,PL=40,PR=20,PT=16,PB=28;
+    const pw=W-PL-PR, ph=H-PT-PB;
+    const xs = months.length>1 ? pw/(months.length-1) : pw;
+    const lines = tags.map((tag,i)=>({
+      tag, color: palette[i%palette.length],
+      data: months.map(m=>{ const s=S.snaps.find(x=>x.month===m); return s?(s.freq[cat][tag]||0):0; })
+    }));
+    const maxV = Math.max(...lines.flatMap(l=>l.data), 1);
+    const svgPts = lines.map(l=>{
+      const pts = l.data.map((v,i)=>`${PL+i*xs},${PT+ph-(v/maxV)*ph}`).join(' ');
+      return `<polyline points="${pts}" fill="none" stroke="${l.color}" stroke-width="2" opacity=".9"/>
+        ${l.data.map((v,i)=>`<circle cx="${PL+i*xs}" cy="${PT+ph-(v/maxV)*ph}" r="3" fill="${l.color}"/>`).join('')}`;
+    }).join('');
+    const xLbls = months.map((m,i)=>`<text x="${PL+i*xs}" y="${H-4}" text-anchor="middle" font-size="10" fill="#A8998C">${m.slice(5)}</text>`).join('');
+    const legend = lines.map(l=>`<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;margin-right:10px;margin-bottom:3px"><span style="width:9px;height:9px;background:${l.color};border-radius:2px;display:inline-block"></span>${escHtml(l.tag)}</span>`).join('');
+    return `<div class="chart-wrap">
+      <h3>${cat} Trends</h3>
+      <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:${H}px;display:block">${svgPts}${xLbls}</svg>
+      <div style="margin-top:7px;display:flex;flex-wrap:wrap">${legend}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// ADDITIONS & ELIMINATIONS
+// ═══════════════════════════════════════
+function renderAE() {
+  const month = new Date().toISOString().slice(0,7);
+  const added   = S.rugs.filter(r=>r.status==='new');
+  const dropped = S.rugs.filter(r=>r.status==='dropped');
+
+  document.getElementById('ae-add-n').textContent = added.length;
+  document.getElementById('ae-drp-n').textContent = dropped.length;
+
+  const mkList = (items, dotCls) => items.length
+    ? items.slice(0,25).map(r=>`<div class="ae-item"><div class="ae-dot ${dotCls}"></div><div class="ae-sku">${escHtml(r.name)}</div><div class="ae-br">${escHtml(r.brand)}</div></div>`).join('')
+      + (items.length>25 ? `<div style="font-size:11px;color:var(--text3);padding:5px 0">+${items.length-25} more</div>` : '')
+    : '<div class="ae-none">None detected</div>';
+
+  document.getElementById('ae-add-list').innerHTML = mkList(added, 'da');
+  document.getElementById('ae-drp-list').innerHTML = mkList(dropped, 'dd');
+
+  const signals = [];
+  const addBrands = [...new Set(added.map(r=>r.brand))];
+  if (addBrands.length >= 3) signals.push({type:'green', msg:`${addBrands.length} brands added rugs simultaneously (${addBrands.join(', ')}) — strong market signal. Check their tags.`});
+  if (added.length >= 10) signals.push({type:'blue', msg:`${added.length} new SKUs this month — significant catalog expansion.`});
+  if (dropped.length >= 5) signals.push({type:'red', msg:`${dropped.length} SKUs eliminated — note their tags and avoid producing those combinations.`});
+  if (!signals.length && S.rugs.length) signals.push({type:'blue', msg:'Import more monthly CSVs to start seeing cross-brand signals.'});
+
+  document.getElementById('ae-signals').innerHTML = signals.map(s=>{
+    const bg = s.type==='green'?'var(--green-light)':s.type==='red'?'var(--red-light)':'var(--blue-light)';
+    const tx = s.type==='green'?'var(--green)':s.type==='red'?'var(--red)':'var(--blue)';
+    return `<div class="signal" style="background:${bg};color:${tx}">${escHtml(s.msg)}</div>`;
+  }).join('') || '<p style="color:var(--text3);font-size:12px">No data yet.</p>';
+}
+
+// ═══════════════════════════════════════
+// BEST SELLERS
+// ═══════════════════════════════════════
+function renderBS() {
+  const el = document.getElementById('bs-body');
+  const brands = [...new Set(S.rugs.map(r=>r.brand))];
+  if (!brands.length) {
+    el.innerHTML = '<div class="bs-empty"><h3>No data yet</h3><p>Import a CSV to see the gallery.</p></div>';
+    return;
+  }
+  el.innerHTML = brands.map(brand => {
+    const rugs = S.rugs.filter(r=>r.brand===brand);
+    return `<div class="brand-sec">
+      <h4>${escHtml(brand)} <span style="font-weight:400">(${rugs.length})</span></h4>
+      <div class="brand-gal">${rugs.map(r => {
+        const t = S.tags[r.idx]||{};
+        return `<div class="bs-card">
+          <div class="bs-img">${r.page ? `<a href="${escAttr(r.page)}" target="_blank" rel="noopener" style="display:block;position:absolute;inset:0;z-index:2"></a>` : ''}<img src="${escAttr(r.img)}" alt="${escAttr(r.name)}" loading="lazy" onerror="this.style.opacity='.2'"></div>
+          <div class="bs-info">
+            <div class="bs-name" title="${escAttr(r.name)}">${escHtml(r.name)}</div>
+            <div class="bs-tags">
+              ${t.color   ? `<span class="bs-tag ctag-c">${escHtml(t.color)}</span>` : ''}
+              ${t.texture ? `<span class="bs-tag ctag-t">${escHtml(t.texture)}</span>` : ''}
+              ${t.design  ? `<span class="bs-tag ctag-d">${escHtml(t.design)}</span>` : ''}
+            </div>
+          </div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+    document.getElementById('pane-'+tab).classList.on;
+    document.getElementById('pane-'+tab).classList.add('on');
+    document.getElementById('fbar').style.display = tab==='gallery' ? 'flex' : 'none';
+    if (tab==='analysis') renderAnalysis();
+    if (tab==='trend') { saveSnap(new Date().toISOString().slice(0,7)); renderTrend(); }
+    if (tab==='ae') renderAE();
+    if (tab==='bs') renderBS();
+    if (tab==='log') renderLog();
+  });
+});
+
+// ═══════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════
+function buildFilters() {
+  const brands = [...new Set(S.rugs.map(r=>r.brand))];
+  document.getElementById('f-brand').innerHTML = '<option value="">All Brands</option>' +
+    brands.map(b=>`<option value="${escAttr(b)}">${escHtml(b)}</option>`).join('');
+  ['color','texture','design'].forEach(cat => {
+    const el = document.getElementById('f-'+cat);
+    el.innerHTML = `<option value="">All ${cat.charAt(0).toUpperCase()+cat.slice(1)}s</option>` +
+      S.vocab[cat].map(v=>`<option value="${escAttr(v)}">${escHtml(v)}</option>`).join('');
+  });
+}
+
+document.getElementById('f-brand').addEventListener('change', renderGallery);
+document.getElementById('f-color').addEventListener('change', renderGallery);
+document.getElementById('f-texture').addEventListener('change', renderGallery);
+document.getElementById('f-design').addEventListener('change', renderGallery);
+document.getElementById('f-status').addEventListener('change', renderGallery);
+document.getElementById('clear-filters').addEventListener('click', () => {
+  ['f-brand','f-color','f-texture','f-design','f-status'].forEach(id=>document.getElementById(id).value='');
+  renderGallery();
+});
+
+// ═══════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════
+function updateStats() {
+  const tagged = S.rugs.filter(r=>isTagged(r.idx)).length;
+  const brands = [...new Set(S.rugs.map(r=>r.brand))];
+  document.getElementById('st-total').textContent = S.rugs.length;
+  document.getElementById('st-tagged').textContent = tagged;
+  document.getElementById('st-brands').textContent = brands.length;
+  document.getElementById('hdr-meta').textContent = brands.length ? brands.join(' · ') : 'No data loaded';
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function escAttr(s) {
+  return String(s||'').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify({rugs:S.rugs,tags:S.tags,log:S.log,vocab:S.vocab,snaps:S.snaps},null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rug-research-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+}
+
+function refreshAll() {
+  updateStats();
+  buildFilters();
+  renderGallery();
+  renderAnalysis();
+  renderAE();
+  renderBS();
+  document.getElementById('log-cnt').textContent = `(${S.log.length})`;
+}
+
+// ═══════════════════════════════════════
+// BACKEND — Google Apps Script
+// ═══════════════════════════════════════
+const BACKEND = 'https://script.google.com/macros/s/AKfycbyuiSAi4YwBDPXOzS4T8NkiB7zkOCFxvwgrwGdXBMCpAKiOT27SGSQlqwxZf_0QxMz8aQ/exec';
+
+// CORS fix: Apps Script only allows GET with no-cors for cross-origin calls from browser
+// For reads: GET with action param, follow redirects
+// For writes: GET with data encoded as param (Apps Script reads e.parameter)
+async function callBackend(action, payload) {
+  try {
+    let url = BACKEND + '?action=' + encodeURIComponent(action);
+    if (payload && Object.keys(payload).length) {
+      // Encode payload as base64 to avoid URL length issues for small payloads
+      // For large saves, chunk or just use localStorage as primary
+      const encoded = encodeURIComponent(JSON.stringify(payload));
+      if (url.length + encoded.length < 7000) {
+        url += '&data=' + encoded;
+      }
+    }
+    const res = await fetch(url, {
+      method: 'GET',
+      redirect: 'follow'
+    });
+    const text = await res.text();
+    // Strip any JSONP wrapping or BOM
+    const clean = text.trim().replace(/^﻿/, '');
+    return JSON.parse(clean);
+  } catch(err) {
+    console.warn('Backend call failed:', action, err.message);
+    return { error: err.message };
+  }
+}
+
+// For large writes, POST with text/plain (no preflight trigger)
+async function postBackend(action, payload) {
+  try {
+    const res = await fetch(BACKEND, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action, ...payload }),
+      redirect: 'follow'
+    });
+    const text = await res.text();
+    const clean = text.trim().replace(/^﻿/, '');
+    return JSON.parse(clean);
+  } catch(err) {
+    console.warn('Backend POST failed:', action, err.message);
+    return { error: err.message };
+  }
+}
+
+let _syncTimer = null;
+let _syncing = false;
+
+function scheduleSyncToSheets() {
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(syncToSheets, 2500);
+}
+
+async function syncToSheets() {
+  if (_syncing) return;
+  _syncing = true;
+  setIndicator('Syncing to Sheets…', 'var(--amber)');
+  const result = await postBackend('saveAll', {
+    rugs: S.rugs,
+    tags: S.tags,
+    log: S.log,
+    snaps: S.snaps,
+    vocab: S.vocab
+  });
+  _syncing = false;
+  if (result.ok) {
+    setIndicator('Saved to Sheets ✓', 'var(--green)');
+    setTimeout(() => setIndicator('', ''), 3000);
+  } else {
+    setIndicator('Sync failed — data safe in localStorage', 'var(--red)');
+    console.warn('Sync error:', result.error);
+  }
+}
+
+async function loadFromSheets() {
+  setIndicator('Loading from Sheets…', 'var(--amber)');
+  const result = await callBackend('loadAll', {});
+  if (result && result.ok && result.rugs && result.rugs.length) {
+    S.rugs = result.rugs.map((r, i) => ({ ...r, idx: i }));
+    S.tags = {};
+    Object.entries(result.tags || {}).forEach(([k, v]) => { S.tags[Number(k)] = v; });
+    S.log   = result.log   || [];
+    S.snaps = result.snaps || [];
+    if (result.vocab && result.vocab.color && result.vocab.color.length) {
+      ['color','texture','design'].forEach(cat => {
+        (result.vocab[cat] || []).forEach(t => {
+          if (!S.vocab[cat].includes(t)) S.vocab[cat].push(t);
+        });
+      });
+    }
+    // Save to localStorage as backup
+    try { localStorage.setItem('rrs2', JSON.stringify(S)); } catch(e) {}
+    refreshAll();
+    if (S.rugs.length) upzone.style.display = 'none';
+    renderLog();
+    setIndicator('Loaded from Sheets ✓', 'var(--green)');
+    setTimeout(() => setIndicator('', ''), 2500);
+  } else {
+    const msg = (result && result.error) ? result.error : 'No data in Sheets yet';
+    setIndicator(msg, result && result.error ? 'var(--red)' : 'var(--text3)');
+    setTimeout(() => setIndicator('', ''), 3000);
+  }
+}
+
+async function initSheets() {
+  setIndicator('Initializing Sheets…', 'var(--amber)');
+  const result = await callBackend('init', {});
+  if (result && result.ok) {
+    setIndicator('Sheets initialized ✓', 'var(--green)');
+    setTimeout(() => setIndicator('', ''), 3000);
+    toast('Google Sheets tabs created successfully');
+  } else {
+    setIndicator('Init failed', 'var(--red)');
+    toast('Init failed: ' + (result ? result.error : 'no response'));
+  }
+}
+
+function setIndicator(text, color) {
+  const el = document.getElementById('sync-indicator');
+  if (el) { el.textContent = text; el.style.color = color || ''; }
+}
+
+// Hook into save() to auto-sync — wrapped without reassigning const
+function saveAndSync() {
+  try { localStorage.setItem('rrs2', JSON.stringify(S)); } catch(e) {}
+  scheduleSyncToSheets();
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+loadSaved();
+refreshAll();
+if (S.rugs.length) upzone.style.display = 'none';
+renderLog();
+// Load from Sheets on startup
+loadFromSheets();
+</script>
+</body>
+</html>
